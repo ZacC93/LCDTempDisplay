@@ -7,6 +7,6 @@ https://howtomechatronics.com/tutorials/arduino/lcd-tutorial/
 
 Serial port is COM3 by default, you can change it in the config file. It also includes an option for update frequency, value is in ms.
 
-Future plans include more options (screen size, more stats, toggle stats on or off and choose where they are displayed on the screen), an app with GUI to easily change the layout.
+Future plans include more options (screen size, more stats, toggle stats on or off and choose where they are displayed on the screen), maybe a form to easily change the layout.
 
 This is just a personal project to get better at programming, you can use the code for whatever you want if it's somehow useful.
