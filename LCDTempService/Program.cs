@@ -62,9 +62,7 @@ namespace LCDTempService
             computer.Close();
         }
         static void GetGPUTemp()    //Getter for GPU temperature, will only show temp of one gpu if using SLI/Crossfire
-        {                           //Seems to have a recursive call for all information on the graphics card 
-                                    //(computer/Hardware/Sensors[i]/Hardware/Sensors[i]/Hardware...) 
-                                    //need to investigate further but it would explain high cpu usage
+        {                           
             UpdateVisitor updateVisitor = new UpdateVisitor();
             Computer computer = new Computer();
             computer.Open();
