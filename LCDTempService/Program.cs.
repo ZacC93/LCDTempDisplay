@@ -39,7 +39,7 @@ namespace LCDTempService
             public void VisitParameter(IParameter parameter) { }
         }
 
-        static void GetCPUTemp()
+        static void GetCPUTemp()    //Getter for CPU temperature, Currently only gets Package temp
         {
             UpdateVisitor updateVisitor = new UpdateVisitor();
             Computer computer = new Computer();
@@ -52,7 +52,7 @@ namespace LCDTempService
                 {
                     foreach (var sensor in computer.Hardware[i].Sensors)
                     {
-                        if (sensor.SensorType == SensorType.Temperature && sensor.Name.Contains("Package"))
+                        if (sensor.SensorType == SensorType.Temperature && sensor.Name.Equals("CPU Package"))
                         {
                             cpuTemp = sensor.Value.ToString();
                         }
@@ -61,8 +61,10 @@ namespace LCDTempService
             }
             computer.Close();
         }
-        static void GetGPUTemp()
-        {
+        static void GetGPUTemp()    //Getter for GPU temperature, will only show temp of one gpu if using SLI/Crossfire
+        {                           //Seems to have a recursive call for all information on the graphics card 
+                                    //(computer/Hardware/Sensors[i]/Hardware/Sensors[i]/Hardware...) 
+                                    //need to investigate further but it would explain high cpu usage
             UpdateVisitor updateVisitor = new UpdateVisitor();
             Computer computer = new Computer();
             computer.Open();
@@ -80,8 +82,8 @@ namespace LCDTempService
                         }
                     }
                 }
-                //AMD is untested, I don't own one
-                else if (computer.Hardware[i].HardwareType == HardwareType.GpuAti)
+                //AMD Works, will get confused if machine has both AMD and Nvidia GPU so it's disabled for now
+                /*else if (computer.Hardware[i].HardwareType == HardwareType.GpuAti)
                 {
                     foreach (var sensor in computer.Hardware[i].Sensors)
                     {
@@ -91,7 +93,7 @@ namespace LCDTempService
                         }
                     }
                 }
-
+                */
             }
             computer.Close();
         }
@@ -102,10 +104,11 @@ namespace LCDTempService
                 lcdSerialPort.Close();
             }
 
-            lcdSerialPort.Open();
+            lcdSerialPort.Open(); //could be moved to while loop so port isn't kept open while inactive
 
             while (true)
             {
+                //lcdSerialPort.Open();
                 lcdSerialPort.Write("<");//start delimiter
                 GetCPUTemp();
                 lcdSerialPort.Write(cpuTemp);
@@ -113,6 +116,7 @@ namespace LCDTempService
                 GetGPUTemp();
                 lcdSerialPort.Write(gpuTemp);
                 lcdSerialPort.Write(">");//end delimiter
+                //lcdSerialPort.Close();
                 Thread.Sleep(sleep);
             }
         }
