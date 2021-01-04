@@ -51,7 +51,8 @@ namespace LCDTempService
             computer.Accept(updateVisitor);
             for (int i = 0; i < computer.Hardware[hardwareIndex].Sensors.Length; i++)
             {
-                if (computer.Hardware[hardwareIndex].Sensors[i].SensorType == SensorType.Temperature && computer.Hardware[hardwareIndex].Sensors[i].Name.Equals("CPU Package"))
+                if (computer.Hardware[hardwareIndex].Sensors[i].SensorType == SensorType.Temperature 
+                    && computer.Hardware[hardwareIndex].Sensors[i].Name.Equals("CPU Package"))
                 {
                     tempSensorIndex = i;
                 }
