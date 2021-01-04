@@ -16,10 +16,5 @@ namespace LCDTempService
         {
             return temp;
         }
-
-        public Hardware()
-        {
-
-        }
     }
 }
