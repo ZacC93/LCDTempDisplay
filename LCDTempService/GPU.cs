@@ -15,12 +15,17 @@ namespace LCDTempService
             return hardwareIndex;
         }
 
+        public int GetGPUTempSensorIndex()
+        {
+            return tempSensorIndex;
+        }
+
         public string GetGPUPackageTemp()
         {
             return temp;
         }
 
-        public void SetGPUHardwareIndex() //hardware index of CPU
+        public void SetGPUHardwareIndex() //Set hardware index of GPU
         {
             UpdateVisitor updateVisitor = new UpdateVisitor();
             Computer computer = new Computer();
@@ -29,7 +34,7 @@ namespace LCDTempService
             computer.Accept(updateVisitor);
             for (int i = 0; i < computer.Hardware.Length; i++)
             {
-                if (computer.Hardware[i].HardwareType == HardwareType.GpuNvidia)
+                if (computer.Hardware[i].HardwareType == HardwareType.GpuNvidia) //GpuAti for AMD cards
                 {
                     hardwareIndex = i;
                 }
@@ -37,7 +42,7 @@ namespace LCDTempService
             computer.Close();
         }
 
-        public void SetGPUtempSensorIndex() //GPU package temp
+        public void SetGPUtempSensorIndex() //Set temperature sensor index of GPU
         {
             UpdateVisitor updateVisitor = new UpdateVisitor();
             Computer computer = new Computer();
@@ -54,41 +59,15 @@ namespace LCDTempService
             computer.Close();
         }
 
-        public void GetGPUTemp() //CPU package temp
+        public void SetGPUTemp() //Set GPU package temp
         {
             UpdateVisitor updateVisitor = new UpdateVisitor();
             Computer computer = new Computer();
             computer.Open();
             computer.GPUEnabled = true;
             computer.Accept(updateVisitor);
-            temp = computer.Hardware[hardwareIndex].Sensors[tempSensorIndex].Value.ToString(); //tempSensorIndex should be 5 but it's 0, will deal with it later. fed up with this shit.
+            temp = computer.Hardware[hardwareIndex].Sensors[tempSensorIndex].Value.ToString(); 
             computer.Close();
         }
-
-
     }
 }
-/*old shit amd part might be useful
-
-                if (computer.Hardware[i].HardwareType == HardwareType.GpuNvidia)
-                {
-                    foreach (var sensor in computer.Hardware[i].Sensors)
-                    {
-                        if (sensor.SensorType == SensorType.Temperature)
-                        {
-                            gpuTemp = sensor.Value.ToString();
-                        }
-                    }
-                }
-                //AMD Works, will get confused if machine has both AMD and Nvidia GPU so it's disabled for now
-                //else if (computer.Hardware[i].HardwareType == HardwareType.GpuAti)
-                {
-                    foreach (var sensor in computer.Hardware[i].Sensors)
-                    {
-                        if (sensor.SensorType == SensorType.Temperature)
-                        {
-                            gpuTemp = sensor.Value.ToString();
-                        }
-                    }
-                }
-*/

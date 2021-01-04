@@ -15,12 +15,17 @@ namespace LCDTempService
             return hardwareIndex;
         }
 
+        public int GetCPUTempSensorIndex()
+        {
+            return tempSensorIndex;
+        }
+
         public string GetCPUPackageTemp()
         {
             return temp;
         }
 
-        public void SetCPUHardwareIndex() //hardware index of CPU
+        public void SetCPUHardwareIndex() //Set hardware index of CPU
         {
             UpdateVisitor updateVisitor = new UpdateVisitor();
             Computer computer = new Computer();
@@ -37,7 +42,7 @@ namespace LCDTempService
             computer.Close();
         }
 
-        public void SetCPUtempSensorIndex() //CPU package temp
+        public void SetCPUtempSensorIndex() //Set temperature sensor index of CPU
         {
             UpdateVisitor updateVisitor = new UpdateVisitor();
             Computer computer = new Computer();
@@ -54,7 +59,7 @@ namespace LCDTempService
             computer.Close();
         }
 
-        public void GetCPUTemp() //CPU package temp
+        public void SetCPUTemp() //Set CPU package temp
         {
             UpdateVisitor updateVisitor = new UpdateVisitor();
             Computer computer = new Computer();
